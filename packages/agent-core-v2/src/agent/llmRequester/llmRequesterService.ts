@@ -67,7 +67,7 @@ import type { LLMRequestTrace } from '#/llm-adapter/contract/request-trace';
 import {
   ToolCallIdNormalizer,
   type ToolCallIdResponseNormalizer,
-} from './toolCallIdNormalizer';
+} from '#human/llm/toolCallIdNormalizer';
 import {
   LlmRequest,
   llmRequestTraceKey,
@@ -571,7 +571,7 @@ export class AgentLLMRequesterService implements IAgentLLMRequesterService {
   ): StreamedMessagePart {
     if (!isToolCall(part)) return part;
     const assigned = toolCallIds.remapStreamedId(part.id, part._streamIndex);
-    return assigned === part.id ? part : { ...part, id: assigned };
+    return assigned === part.id ? part : { ...part, id: assigned, rawId: part.rawId ?? part.id };
   }
 
   private warnAboutAnthropicThinkingEffort(request: ResolvedLLMRequest): void {
